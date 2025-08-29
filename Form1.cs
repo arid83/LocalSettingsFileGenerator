@@ -29,19 +29,41 @@ namespace LocalSettingsFileGenerator
                     }
 
                     var settingsJsonData = $"{{{Environment.NewLine}\"IsEncrypted\": false, {Environment.NewLine}\"Values\": {{ {Environment.NewLine}{sb}{Environment.NewLine}  }} {Environment.NewLine}}}";
-                    System.IO.File.WriteAllText($"local.settings.json", settingsJsonData);
-                    MessageBox.Show("local.settings.json file is created successfully.", "Success", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Information);
+                    textBox2.Text = settingsJsonData;
+                    System.IO.File.WriteAllText($"local.settings{DateTime.Now:MMddyyyyhhmmss}.json", settingsJsonData);
+                    ShowMessage($"Success: local.settings.json file is created successfully.", false);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Oops! something went wrong", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
+                ShowMessage($"Error: Oops! something went wrong... {ex.Message}");
             }
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             textBox1.Text = String.Empty;
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            ClearMessage();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            ClearMessage();
+        }
+
+        private void ShowMessage(string message, bool isError = true)
+        {
+            lblResposne.Text = message;
+            lblResposne.ForeColor = isError ? System.Drawing.Color.Red : System.Drawing.Color.Green;
+        }
+
+        private void ClearMessage()
+        {
+            lblResposne.Text = string.Empty;
         }
     }
 
